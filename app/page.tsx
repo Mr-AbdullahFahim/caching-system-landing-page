@@ -3,58 +3,234 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
-      <nav className="border-b border-slate-200 bg-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
+      
+      {/* Navigation */}
+      <nav className="border-b border-slate-200 bg-white sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center text-white font-bold text-xl">📦</div>
-            <span className="text-xl font-bold tracking-tight">pkg-cache</span>
+            <div className="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center text-white font-bold text-xl">
+              📦
+            </div>
+            <span className="text-xl font-bold tracking-tight text-slate-900">pkg-cache</span>
           </div>
-          <div className="text-sm font-medium text-slate-500">v1.0.0 Release</div>
+          <div className="flex items-center space-x-6">
+            <a 
+              href="https://github.com/Mr-AbdullahFahim/Caching-System" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors flex items-center"
+            >
+              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+              </svg>
+              GitHub Repository
+            </a>
+          </div>
         </div>
       </nav>
 
+      {/* Hero Section */}
       <main>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 sm:text-6xl mb-6">
-              Lightning Fast Package Caching
+              Bandwidth Optmization through Package Caching
             </h1>
-            <p className="text-xl text-slate-600 mb-10 leading-relaxed">
-              A centralized caching system for APT (Debian/Ubuntu), NPM (Node.js), and PyPI (Python). Reduce bandwidth usage and drastically speed up your environment setups.
+            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+              A centralized package acceleration platform developed to reduce repeated software downloads in shared computing environments such as university laboratories, training centers, office networks, and development teams.
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
               <Link href="/server" className="w-full sm:w-auto px-8 py-4 text-base font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-all text-center">
                 Configure Server
               </Link>
-              <Link href="/client" className="w-full sm:w-auto px-8 py-4 text-base font-semibold rounded-lg text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 shadow-sm transition-all text-center">
+              <Link href="/client" className="w-full sm:w-auto px-8 py-4 text-base font-semibold rounded-lg text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 shadow-sm transition-all text-center">
                 Connect Client Machine
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Features Grid */}
-        <div className="bg-white py-24 sm:py-32 border-t border-slate-200">
+        {/* The Problem & Solution Section */}
+        <div className="bg-white py-20 border-t border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
-                <h3 className="text-xl font-bold mb-3">APT Caching</h3>
-                <p className="text-slate-600">Uses apt-cacher-ng (Port 3142) for Debian/Ubuntu packages.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-6">
+                  Why build a local caching server?
+                </h2>
+                <div className="space-y-4 text-lg text-slate-600">
+                  <p>
+                    In many environments, multiple client machines independently request the same Debian or Ubuntu packages through APT, the same JavaScript dependencies through npm, and the same Python libraries through pip.
+                  </p>
+                  <p>
+                    This creates unnecessary internet usage, delays software installation, and reduces productivity, especially when the connection is slow, limited, or unstable. The problem becomes more serious in classrooms and lab sessions where many users set up similar tools at the same time.
+                  </p>
+                  <p className="font-semibold text-slate-900">
+                    Our solution introduces a single local caching server that acts as an intermediary. Instead of every machine downloading the same packages separately, the first request is fetched from the internet and later requests are served directly from the local cache.
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-bold mb-3">NPM Caching</h3>
-                <p className="text-slate-600">Uses verdaccio (Port 4873) for Node.js packages.</p>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-3">PyPI Caching</h3>
-                <p className="text-slate-600">Uses devpi (Port 3141) for Python packages.</p>
+              <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200">
+                <h3 className="text-xl font-bold text-slate-900 mb-4">Project Outcomes</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <svg className="h-6 w-6 text-green-500 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-slate-700">Improved installation speed.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="h-6 w-6 text-green-500 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-slate-700">Reduced external bandwidth consumption.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="h-6 w-6 text-green-500 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-slate-700">Faster repeated package access.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="h-6 w-6 text-green-500 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-slate-700">Simpler onboarding of client machines.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="h-6 w-6 text-green-500 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-slate-700">More reliable software setup in environments with limited or unstable internet access.</span>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Features & Technologies Grid */}
+        <div className="bg-slate-50 py-20 border-t border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16 max-w-3xl mx-auto">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Supported Ecosystems & Technologies
+              </h2>
+              <p className="mt-4 text-lg text-slate-600">
+                During the initial server configuration, three caching repositories are created inside Docker containers so that the system can support multiple package ecosystems through one centralized platform.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-12 w-12 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 mb-6">
+                  <span className="font-bold text-lg">APT</span>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">APT Caching (Linux)</h3>
+                <p className="text-slate-600">
+                  Utilizes <span className="font-semibold">apt-cacher-ng</span> for Debian and Ubuntu package caching. Once configured, APT traffic is directed to the local service.
+                </p>
+              </div>
+
+              <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-12 w-12 rounded-xl bg-red-100 flex items-center justify-center text-red-600 mb-6">
+                   <span className="font-bold text-lg">NPM</span>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">NPM Caching</h3>
+                <p className="text-slate-600">
+                  Utilizes <span className="font-semibold">Verdaccio</span> for Node.js package proxying. Client npm requests are automatically redirected to the Verdaccio registry.
+                </p>
+              </div>
+
+              <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-12 w-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 mb-6">
+                   <span className="font-bold text-lg">PIP</span>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">PyPI Caching</h3>
+                <p className="text-slate-600">
+                  Utilizes <span className="font-semibold">devpi</span> for Python package indexing and mirroring. Pip is seamlessly pointed to the devpi index to serve cached Python libraries.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-12 bg-indigo-50 border border-indigo-100 rounded-2xl p-6 text-center">
+              <p className="text-indigo-900 font-medium">
+                <strong>Core Tech Stack:</strong> Bash scripting, Docker & Docker Compose, Python (Tkinter GUI), and PowerShell. These technologies make the system lightweight, reproducible, and easy to deploy.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Team Section */}
+        <div className="bg-white py-24 border-t border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900">Meet the Team</h2>
+              <p className="mt-4 text-lg text-slate-600">
+                The contributors behind the Unified Package Caching System.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Team Member 1 */}
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                <div className="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">AF</div>
+                <h3 className="text-lg font-bold text-slate-900">A. Fahim</h3>
+                <p className="text-sm text-indigo-600 font-medium mb-3">Project Lead</p>
+                <p className="text-sm text-slate-600">
+                  Core server-side Bash scripting, Docker-based cache deployment, system integration, and documentation.
+                </p>
+              </div>
+
+              {/* Team Member 2 */}
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">AH</div>
+                <h3 className="text-lg font-bold text-slate-900">A. Hussain</h3>
+                <p className="text-sm text-blue-600 font-medium mb-3">Windows & Automation</p>
+                <p className="text-sm text-slate-600">
+                  Windows client configuration, PowerShell automation, connectivity checks, testing, and debugging.
+                </p>
+              </div>
+
+              {/* Team Member 3 */}
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">MF</div>
+                <h3 className="text-lg font-bold text-slate-900">M. Fazil</h3>
+                <p className="text-sm text-emerald-600 font-medium mb-3">Client Interface</p>
+                <p className="text-sm text-slate-600">
+                  Client installer interface, Linux and Windows installer packaging, and usability improvements.
+                </p>
+              </div>
+
+              {/* Team Member 4 */}
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                <div className="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">MM</div>
+                <h3 className="text-lg font-bold text-slate-900">M. Musharaf</h3>
+                <p className="text-sm text-amber-600 font-medium mb-3">Testing & Deployment</p>
+                <p className="text-sm text-slate-600">
+                  Testing, troubleshooting, deployment assistance, and validation support.
+                </p>
+              </div>
+
+              {/* Team Member 5 */}
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 lg:col-start-2">
+                <div className="w-12 h-12 bg-rose-100 text-rose-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">RR</div>
+                <h3 className="text-lg font-bold text-slate-900">R. Risani</h3>
+                <p className="text-sm text-rose-600 font-medium mb-3">Research & Validation</p>
+                <p className="text-sm text-slate-600">
+                  Research, validation, report writing, and presentation support.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </main>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white py-12 border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+          <div className="w-10 h-10 bg-indigo-600 rounded flex items-center justify-center text-white font-bold text-xl mb-6">📦</div>
+          <p className="text-slate-300 font-medium">
+            Unified Package Caching System (pkg-cache)
+          </p>
+          <p className="text-slate-500 text-sm mt-2 max-w-xl mx-auto">
+            Demonstrating how a single well-configured local server can improve efficiency, reduce repetitive downloads, and make day-to-day software installation significantly smoother in shared computing environments.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
