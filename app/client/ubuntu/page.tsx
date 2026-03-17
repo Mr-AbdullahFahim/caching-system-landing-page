@@ -25,7 +25,7 @@ export default function UbuntuClientPage() {
             <a href="/pkg-cache.sh" download className="px-6 py-3 bg-slate-800 text-white rounded-lg font-semibold text-center hover:bg-slate-700 transition-colors">
               Download Script (.sh)
             </a>
-            <a href="/linux-installer.zip" download className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-semibold text-center hover:bg-indigo-700 transition-colors">
+            <a href="/fetchlink-ubuntu-client-installer" download className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-semibold text-center hover:bg-indigo-700 transition-colors">
               Download GUI Installer
             </a>
           </div>

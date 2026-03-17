@@ -30,7 +30,7 @@ export default function WindowsClientPage() {
             <a href="/pkg-cache-client.ps1" download className="px-6 py-3 bg-slate-800 text-white rounded-lg font-semibold text-center hover:bg-slate-700 transition-colors">
               Download Script (.ps1)
             </a>
-            <a href="/windows_client_intaller.zip" download className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-center hover:bg-blue-700 transition-colors">
+            <a href="/fetchlink-win-client-installer.exe" download className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold text-center hover:bg-blue-700 transition-colors">
               Download GUI Installer
             </a>
           </div>
