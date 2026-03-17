@@ -2,6 +2,64 @@ import React from 'react';
 import Link from 'next/link';
 
 export default function Home() {
+  const teamMembers = [
+    {
+      initials: 'AF',
+      name: 'Abdullah Fahim',
+      role: 'Project Lead',
+      roleClass: 'text-indigo-600',
+      description:
+        'Core server-side Bash scripting, Docker-based cache deployment, system integration, and documentation.',
+      bgClass: 'bg-indigo-100',
+      textClass: 'text-indigo-700',
+      githubUrl: 'https://github.com/Mr-AbdullahFahim',
+    },
+    {
+      initials: 'AH',
+      name: 'Amjad Hussain',
+      role: 'Windows & Automation',
+      roleClass: 'text-blue-600',
+      description:
+        'Windows client configuration, PowerShell automation, connectivity checks, testing, and debugging.',
+      bgClass: 'bg-blue-100',
+      textClass: 'text-blue-700',
+      githubUrl: 'https://github.com/amjadh27',
+    },
+    {
+      initials: 'MF',
+      name: 'Mohamed Fazil',
+      role: 'Client Interface',
+      roleClass: 'text-emerald-600',
+      description:
+        'Client installer interface, Linux and Windows installer packaging, and usability improvements.',
+      bgClass: 'bg-emerald-100',
+      textClass: 'text-emerald-700',
+      githubUrl: 'https://github.com/Fazilfareed',
+    },
+    {
+      initials: 'AM',
+      name: 'Musharaf Munaf',
+      role: 'Testing & Deployment',
+      roleClass: 'text-amber-600',
+      description:
+        'Developed the project landing page, while managing testing, troubleshooting, deployment assistance, and validation support.',
+      bgClass: 'bg-amber-100',
+      textClass: 'text-amber-700',
+      githubUrl: 'https://github.com/MusharafAM',
+    },
+    {
+      initials: 'RR',
+      name: 'R. Risani',
+      role: 'Research & Validation',
+      roleClass: 'text-rose-600',
+      description:
+        'Research, validation, report writing, and presentation support.',
+      bgClass: 'bg-rose-100',
+      textClass: 'text-rose-700',
+      githubUrl: '',
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
       
@@ -12,7 +70,7 @@ export default function Home() {
             <div className="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center text-white font-bold text-xl">
               📦
             </div>
-            <span className="text-xl font-bold tracking-tight text-slate-900">pkg-cache</span>
+            <span className="text-xl font-bold tracking-tight text-slate-900">FetchLink</span>
           </div>
           <div className="flex items-center space-x-6">
             <a 
@@ -159,60 +217,25 @@ export default function Home() {
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900">Meet the Team</h2>
               <p className="mt-4 text-lg text-slate-600">
-                The contributors behind the Unified Package Caching System.
+                The contributors behind the FetchLink package caching System.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Team Member 1 */}
-              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
-                <div className="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">AF</div>
-                <h3 className="text-lg font-bold text-slate-900">A. Fahim</h3>
-                <p className="text-sm text-indigo-600 font-medium mb-3">Project Lead</p>
-                <p className="text-sm text-slate-600">
-                  Core server-side Bash scripting, Docker-based cache deployment, system integration, and documentation.
-                </p>
-              </div>
-
-              {/* Team Member 2 */}
-              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
-                <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">AH</div>
-                <h3 className="text-lg font-bold text-slate-900">A. Hussain</h3>
-                <p className="text-sm text-blue-600 font-medium mb-3">Windows & Automation</p>
-                <p className="text-sm text-slate-600">
-                  Windows client configuration, PowerShell automation, connectivity checks, testing, and debugging.
-                </p>
-              </div>
-
-              {/* Team Member 3 */}
-              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
-                <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">MF</div>
-                <h3 className="text-lg font-bold text-slate-900">M. Fazil</h3>
-                <p className="text-sm text-emerald-600 font-medium mb-3">Client Interface</p>
-                <p className="text-sm text-slate-600">
-                  Client installer interface, Linux and Windows installer packaging, and usability improvements.
-                </p>
-              </div>
-
-              {/* Team Member 4 */}
-              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200">
-                <div className="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">MM</div>
-                <h3 className="text-lg font-bold text-slate-900">M. Musharaf</h3>
-                <p className="text-sm text-amber-600 font-medium mb-3">Testing & Deployment</p>
-                <p className="text-sm text-slate-600">
-                  Testing, troubleshooting, deployment assistance, and validation support.
-                </p>
-              </div>
-
-              {/* Team Member 5 */}
-              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 lg:col-start-2">
-                <div className="w-12 h-12 bg-rose-100 text-rose-700 rounded-full flex items-center justify-center font-bold text-xl mb-4">RR</div>
-                <h3 className="text-lg font-bold text-slate-900">R. Risani</h3>
-                <p className="text-sm text-rose-600 font-medium mb-3">Research & Validation</p>
-                <p className="text-sm text-slate-600">
-                  Research, validation, report writing, and presentation support.
-                </p>
-              </div>
+              {teamMembers.map((member) => (
+                <a
+                  key={member.name}
+                  href={member.githubUrl || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block p-6 bg-slate-50 rounded-2xl border border-slate-200 hover:shadow-lg transition-shadow"
+                >
+                  <div className={`w-12 h-12 ${member.bgClass} ${member.textClass} rounded-full flex items-center justify-center font-bold text-xl mb-4`}>{member.initials}</div>
+                  <h3 className="text-lg font-bold text-slate-900">{member.name}</h3>
+                  <p className={`text-sm font-medium mb-3 ${member.roleClass}`}>{member.role}</p>
+                  <p className="text-sm text-slate-600">{member.description}</p>
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -224,7 +247,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
           <div className="w-10 h-10 bg-indigo-600 rounded flex items-center justify-center text-white font-bold text-xl mb-6">📦</div>
           <p className="text-slate-300 font-medium">
-            Unified Package Caching System (pkg-cache)
+            FetchLink package caching System (pkg-cache)
           </p>
           <p className="text-slate-500 text-sm mt-2 max-w-xl mx-auto">
             Demonstrating how a single well-configured local server can improve efficiency, reduce repetitive downloads, and make day-to-day software installation significantly smoother in shared computing environments.
