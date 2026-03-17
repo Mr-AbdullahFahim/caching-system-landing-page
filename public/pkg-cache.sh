@@ -11,12 +11,8 @@ IFS=$'\n\t'
 #  - Verdaccio storage permissions (EACCES -> 500) by chown to container uid/gid
 #  - APT 404 for security.ubuntu.com via proxy by forcing DIRECT for that host
 #  - grep + pipefail safety
-#  - Works even when "docker-compose" (v1) is installed instead of "docker compose" (v2)
-#  - If docker-compose (v1) can't access the daemon (PermissionError 13),
-#    it will automatically run docker-compose via:
-#       1) DOCKER_HOST from current docker context (rootless/context support)
-#       2) sg docker (immediate docker-group usage)
-#       3) sudo as a last resort
+#  - Auto-installs docker-compose-plugin if missing
+#  - Strict daemon permission checks via `docker ps` with fixed fallback logic
 # -----------------------------
 
 SCRIPT_NAME="$(basename "$0")"
@@ -289,9 +285,7 @@ in_docker_group() {
 }
 
 get_docker_context_host() {
-  # Returns something like: unix:///var/run/docker.sock OR unix:///run/user/1000/docker.sock
   command -v python3 >/dev/null 2>&1 || return 1
-
   local ctx json host
   ctx="$(docker_capture context show 2>/dev/null | tr -d '\r' || true)"
   [[ -n "$ctx" ]] || return 1
@@ -337,16 +331,17 @@ detect_compose_mode() {
 }
 
 try_install_compose_v2() {
-  # Best-effort: try to install compose v2 packages if available (do not fail hard).
   detect_debian || return 0
   command -v apt-get >/dev/null 2>&1 || return 0
   command -v apt-cache >/dev/null 2>&1 || return 0
 
+  log "Updating apt and installing Docker Compose..."
   sudo_run apt-get update -y >/dev/null 2>&1 || true
 
   for p in docker-compose-v2 docker-compose-plugin; do
     if apt-cache show "$p" >/dev/null 2>&1; then
-      sudo_run apt-get install -y "$p" >/dev/null 2>&1 || true
+      log "Installing $p via apt-get..."
+      sudo_run apt-get install -y "$p" >/dev/null 2>&1 && return 0
     fi
   done
 }
@@ -356,7 +351,6 @@ init_legacy_compose_env() {
   COMPOSE_FORCE_SUDO="0"
   COMPOSE_FORCE_SG="0"
 
-  # Use current docker context host if possible (fixes rootless/contexts not supported by docker-compose v1)
   local host
   host="$(get_docker_context_host 2>/dev/null || true)"
   if [[ -n "${host:-}" ]]; then
@@ -364,30 +358,25 @@ init_legacy_compose_env() {
     log "Legacy docker-compose: using DOCKER_HOST from context: $LEGACY_DOCKER_HOST"
   fi
 
-  # Decide how to run docker-compose so it can access the docker socket
   local sock=""
   if [[ -n "${LEGACY_DOCKER_HOST:-}" ]]; then
     sock="$(unix_host_socket_path "$LEGACY_DOCKER_HOST" || true)"
   else
-    # docker-compose v1 default is /var/run/docker.sock
     sock="/var/run/docker.sock"
     LEGACY_DOCKER_HOST="unix:///var/run/docker.sock"
   fi
 
   if [[ -n "$sock" && -S "$sock" ]]; then
     if [[ -r "$sock" && -w "$sock" ]]; then
-      # ok
       return 0
     fi
 
-    # Not writable in this session -> try sg docker first if user is in docker group
     if command -v sg >/dev/null 2>&1 && in_docker_group; then
       COMPOSE_FORCE_SG="1"
       warn "Legacy docker-compose can't access docker socket in this session; will run via: sg docker (no logout needed)."
       return 0
     fi
 
-    # Otherwise fallback to sudo for legacy compose
     COMPOSE_FORCE_SUDO="1"
     warn "Legacy docker-compose can't access docker socket; will run docker-compose with sudo."
     return 0
@@ -395,7 +384,6 @@ init_legacy_compose_env() {
 }
 
 legacy_compose_exec() {
-  # Runs docker-compose with correct DOCKER_HOST + permissions strategy
   local -a args=("$@")
   local quoted_host=""
   quoted_host="$(printf '%q' "$LEGACY_DOCKER_HOST")"
@@ -496,31 +484,27 @@ ensure_docker_group() {
 init_docker_runner() {
   need_cmd docker
 
-  if ! sudo_run docker info >/dev/null 2>&1; then
+  if ! sudo_run docker ps >/dev/null 2>&1; then
     warn "Docker daemon not responding; trying restart..."
     sudo_run systemctl restart docker >/dev/null 2>&1 || true
   fi
 
-  # First try plain
-  if docker info >/dev/null 2>&1; then
+  # Reset DOCKER_MODE so it correctly falls through
+  DOCKER_MODE="none"
+
+  # Test normal access
+  if docker ps >/dev/null 2>&1; then
     DOCKER_MODE="plain"
-  else
-    # Try sg docker if user is in docker group (works without logout)
-    if command -v sg >/dev/null 2>&1 && in_docker_group; then
-      if sg docker -c "docker info" >/dev/null 2>&1; then
-        DOCKER_MODE="sg"
-      fi
-    fi
+  # Test if switching to the docker group fixes access
+  elif command -v sg >/dev/null 2>&1 && in_docker_group && sg docker -c "docker ps" >/dev/null 2>&1; then
+    DOCKER_MODE="sg"
+  # Fallback to full sudo
+  elif sudo_run docker ps >/dev/null 2>&1; then
+    DOCKER_MODE="sudo"
   fi
 
-  # Finally sudo fallback
-  if [[ "$DOCKER_MODE" != "plain" && "$DOCKER_MODE" != "sg" ]]; then
-    if sudo_run docker info >/dev/null 2>&1; then
-      DOCKER_MODE="sudo"
-      warn "Docker access requires sudo on this machine/session."
-    else
-      die "Docker daemon is not accessible. Check: sudo systemctl status docker"
-    fi
+  if [[ "$DOCKER_MODE" == "none" ]]; then
+    die "Docker daemon is not accessible. Check: sudo systemctl status docker"
   fi
 
   log "Docker access: OK ($DOCKER_MODE)."
@@ -528,10 +512,12 @@ init_docker_runner() {
   # Detect compose
   detect_compose_mode || true
 
-  # If only legacy compose is available, try to install compose v2 plugin (best effort),
-  # then re-detect and prefer plugin if it appears.
-  if [[ "$COMPOSE_MODE" == "legacy" ]]; then
-    warn "Only legacy docker-compose detected. Trying to install Docker Compose v2 (preferred)..."
+  if [[ "$COMPOSE_MODE" == "none" || "$COMPOSE_MODE" == "legacy" ]]; then
+    if [[ "$COMPOSE_MODE" == "none" ]]; then
+      log "Docker Compose not found. Attempting to install..."
+    else
+      warn "Only legacy docker-compose detected. Trying to install Docker Compose v2 (preferred)..."
+    fi
     try_install_compose_v2
     detect_compose_mode || true
   fi
@@ -541,7 +527,7 @@ init_docker_runner() {
   fi
 
   if [[ "$COMPOSE_MODE" == "none" ]]; then
-    die "Docker Compose not found. Install one of these:\n  - docker-compose-v2 (preferred)\n  - docker-compose (legacy)"
+    die "Docker Compose not found. Install one of these manually:\n  - docker-compose-v2 (preferred)\n  - docker-compose (legacy)"
   fi
 
   log "Compose mode: $COMPOSE_MODE"
