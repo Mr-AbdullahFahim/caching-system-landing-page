@@ -56,7 +56,7 @@ export default function Home() {
         'Research, validation, report writing, and presentation support.',
       bgClass: 'bg-rose-100',
       textClass: 'text-rose-700',
-      githubUrl: '',
+      githubUrl: 'https://github.com/Risha123-design',
     },
   ];
 
